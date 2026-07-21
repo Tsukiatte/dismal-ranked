@@ -1,0 +1,31 @@
+# Secrets
+.env
+
+# Database -- contains player data, never commit it
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# The original JSON stores this project migrated away from
+databases/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

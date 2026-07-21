@@ -1,0 +1,21 @@
+# Pinned to the versions this bot was built and run against.
+#
+# discord.py 1.7.3 is required by discord-py-slash-command 3.x, which predates
+# slash command support landing in discord.py 2.0. See the README's
+# "Known limitations" section before upgrading -- 2.x renames the command
+# decorators and the Asset API this code uses.
+
+discord.py==1.7.3
+discord-py-slash-command==3.0.3
+Pillow==9.0.1
+python-dotenv==0.21.1
+
+# Flask and its transitive dependencies are pinned together. Flask 2.0.3 calls
+# werkzeug.urls.url_quote, which was removed in Werkzeug 2.1 -- leaving
+# Werkzeug unpinned installs a version that fails at import.
+Flask==2.0.3
+Werkzeug==2.0.3
+Jinja2==3.0.3
+itsdangerous==2.1.1
+click==8.0.4
+MarkupSafe==2.1.1
