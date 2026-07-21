@@ -1,6 +1,6 @@
 # Dismal Ranked
 
-[![CI](https://github.com/USERNAME/dismal-ranked/actions/workflows/ci.yml/badge.svg)](https://github.com/USERNAME/dismal-ranked/actions/workflows/ci.yml)
+[![CI](https://github.com/Tsukiatte/dismal-ranked/actions/workflows/ci.yml/badge.svg)](https://github.com/Tsukiatte/dismal-ranked/actions/workflows/ci.yml)
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -157,7 +157,7 @@ query, so schema changes stay in one file.
 Requires Python 3.8.
 
 ```bash
-git clone https://github.com/USERNAME/dismal-ranked
+git clone https://github.com/Tsukiatte/dismal-ranked
 cd dismal-ranked
 
 python -m venv .venv
