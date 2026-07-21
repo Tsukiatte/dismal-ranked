@@ -4,10 +4,8 @@ import asyncio
 
 import discord
 
-import config
-from .. import games
+from .. import games, utils
 from .. import repository as repo
-from .. import utils
 
 STATUS_PICKING = ("Picking Teams", 0x1F51FF)
 STATUS_PLAYING = ("Scrimming", 0xFFF01F)

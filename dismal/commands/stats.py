@@ -14,6 +14,7 @@ import discord
 from PIL import Image, ImageDraw, ImageFont
 
 import config
+
 from .. import repository as repo
 from .. import utils
 

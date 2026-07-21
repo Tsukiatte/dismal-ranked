@@ -11,7 +11,6 @@ register on messages that fall out of the bot's message cache.
 import discord
 from discord.ext import commands
 
-import config
 from .. import games
 from .. import repository as repo
 from ..commands.voids import VOTES_REQUIRED

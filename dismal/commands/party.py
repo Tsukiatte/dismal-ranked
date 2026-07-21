@@ -8,6 +8,7 @@ the moment the invite is sent; if the invitee does not accept within
 import asyncio
 
 import config
+
 from .. import repository as repo
 from .. import utils
 

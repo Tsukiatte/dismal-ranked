@@ -5,9 +5,9 @@ when a crash mid-game-creation leaves the queue refusing new joins.
 """
 
 import config
-from .. import games
+
+from .. import games, utils
 from .. import repository as repo
-from .. import utils
 
 QUEUE_LOCKED = "queue_locked"
 

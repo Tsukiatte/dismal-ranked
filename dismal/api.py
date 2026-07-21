@@ -15,6 +15,7 @@ from threading import Thread
 from flask import Flask, jsonify, request
 
 import config
+
 from . import db
 from . import repository as repo
 
@@ -45,7 +46,7 @@ def serialise(row, rank=None):
         "rank": {"name": name, "colour": list(colour)},
         "wins": row["wins"],
         "losses": row["losses"],
-        "wlr": "{0:.2f}".format(row["wins"] / max(row["losses"], 1)),
+        "wlr": f"{row['wins'] / max(row['losses'], 1):.2f}",
     }
 
 

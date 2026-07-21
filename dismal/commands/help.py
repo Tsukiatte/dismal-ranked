@@ -6,7 +6,6 @@ a command means editing one list entry.
 
 import discord
 
-import config
 from .. import utils
 
 FOOTER_ICON = (

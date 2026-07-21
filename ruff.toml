@@ -1,0 +1,31 @@
+# Ruff is used for linting only; it is a development tool and is not part of
+# the bot's pinned runtime dependencies.
+
+line-length = 80
+target-version = "py38"
+
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # import sorting
+    "UP",  # pyupgrade
+    "B",   # bugbear
+    "C4",  # comprehensions
+]
+
+ignore = [
+    # The bot's user-facing strings are long by nature (embed descriptions,
+    # help text) and wrapping them hurts readability more than it helps.
+    "E501",
+]
+
+[per-file-ignores]
+# `help` shadows the builtin, but it is the command's name.
+"dismal/commands/help.py" = ["A001", "A002"]
+# Tests adjust sys.path before importing the package under test.
+"tests/*" = ["E402"]
+"scripts/*" = ["E402"]
+
+[isort]
+known-first-party = ["config", "dismal"]

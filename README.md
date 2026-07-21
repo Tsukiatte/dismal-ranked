@@ -1,15 +1,43 @@
 # Dismal Ranked
 
+[![CI](https://github.com/USERNAME/dismal-ranked/actions/workflows/ci.yml/badge.svg)](https://github.com/USERNAME/dismal-ranked/actions/workflows/ci.yml)
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 A competitive matchmaking Discord bot for a Minecraft PvP community. It ran a
-full ranked ladder for a ~300 player server: voice-channel queuing, captain
-drafting, screenshot-verified scoring, elo ratings with division roles, a
-party system for duo queuing, moderation tooling, and a public REST API that
-fed the community website's leaderboard.
+full ranked ladder: voice-channel queuing, captain drafting,
+screenshot-verified scoring, elo ratings with division roles, a party system
+for duo queuing, moderation tooling, and a public REST API that fed the
+community website's leaderboard.
 
 Built in 2022; the storage layer was rewritten from flat JSON files to SQLite
 in 2026.
 
----
+| | |
+|---|---|
+| Registered players | 286 |
+| Games run | 254 (200 scored) |
+| Player-games recorded | 2,032 |
+| Slash commands | 36 |
+| Lobby size | 8 players, 2 teams |
+
+## Demo
+
+<!--
+  TODO: replace with the YouTube walkthrough.
+
+  Thumbnail-link form (works on GitHub -- embedded <iframe> does not):
+
+  [![Dismal Ranked demo](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
+
+  Worth capturing, in order: joining the queue voice channel, the lobby
+  filling and channels being created, a captain running /pick, the teams
+  splitting into their voice channels, /score with screenshots, a scorer
+  running /submit, and the elo/role updates landing.
+-->
+
+*A video walkthrough is coming — for now, the flow below and the screenshots
+show how it works.*
 
 ## How it works
 
@@ -44,6 +72,19 @@ player joins the queue voice channel
 Any player can call `/void` to open a vote; five reactions cancels the game
 with no rating change.
 
+## Screenshots
+
+Both images are generated at request time with Pillow, composited over a
+background template.
+
+**`/leaderboard`** — top 10 by elo
+
+![Leaderboard](assets/screenshots/leaderboard.png)
+
+**`/info`** — a player's stat card
+
+![Player stat card](assets/screenshots/stat-card.png)
+
 ## Features
 
 **Ranked play**
@@ -73,8 +114,20 @@ with no rating change.
 A read-only Flask API runs alongside the bot:
 
 ```
-GET /v1/players/<username>      a single player's stats
-GET /v1/players?limit=10&sort=elo   the top N players
+GET /v1/players/<username>            a single player's stats
+GET /v1/players?limit=10&sort=elo     the top N players
+```
+
+```json
+{
+  "id": "680083650792259700",
+  "username": "hqrma",
+  "elo": 500,
+  "rank": { "name": "DIAMOND", "colour": [85, 255, 255] },
+  "wins": 11,
+  "losses": 3,
+  "wlr": "3.67"
+}
 ```
 
 ## Architecture
@@ -104,7 +157,7 @@ query, so schema changes stay in one file.
 Requires Python 3.8.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/USERNAME/dismal-ranked
 cd dismal-ranked
 
 python -m venv .venv
@@ -122,15 +175,22 @@ original JSON version:
 python scripts/migrate_json.py path/to/databases
 ```
 
-## Tests
+## Development
 
 ```bash
-python -m unittest discover -s tests
+pip install -r requirements-dev.txt
+
+python -m unittest discover -s tests    # 35 tests
+ruff check .                            # lint
 ```
 
-35 tests covering the storage layer, transaction rollback, party lifecycle,
+Tests cover the storage layer, transaction rollback, party lifecycle,
 punishment expiry and the rating brackets. They run against a temporary
-database and need no Discord connection.
+database and need no Discord connection, so they work on any supported Python
+version without installing the bot's runtime dependencies.
+
+CI runs the suite on Python 3.8–3.12, lints, verifies the pinned dependency
+set still installs and imports, and smoke-tests the migration script.
 
 ## The SQLite rewrite
 
@@ -148,7 +208,7 @@ Now the whole result lands in one transaction, and there is a test asserting
 that a failure mid-write rolls back cleanly.
 
 **Read amplification.** `/submit` reloaded and reparsed the entire player file
-inside a loop over both teams. Ranking meant loading all ~300 players into
+inside a loop over both teams. Ranking meant loading all 286 players into
 Python and sorting them; a task rebuilt `leaderboard.json` every 60 seconds so
 the leaderboard was up to a minute stale. It is now a SQL view — always
 current, no rebuild task.
@@ -164,7 +224,7 @@ Alongside the storage work, the guild's IDs were pulled out of thirty modules
 into `config.py`, the repeated permission/mention/role-guard blocks were
 collapsed into `utils.py`, and the game-channel teardown — which had been
 copy-pasted into four modules with different error handling in each — moved
-into `games.py`.
+into `games.py`. 165 bare `except:` clauses became typed handlers.
 
 ## Known limitations
 
@@ -177,3 +237,7 @@ into `games.py`.
   original server. Running it elsewhere means replacing them.
 - Command coverage is tested only at the storage layer; the Discord-facing
   handlers have no integration tests.
+
+## License
+
+MIT — see [LICENSE](LICENSE).

@@ -8,6 +8,7 @@ into their team voice channel, and the shared pick channel is deleted.
 import discord
 
 import config
+
 from .. import repository as repo
 from .. import utils
 

@@ -22,15 +22,15 @@ from dismal.commands import (
     admin,
     channels,
     game_info,
-    help as help_command,
+    help,
     moderation,
-    party as party_commands,
-    pick as pick_command,
+    party,
+    pick,
     ranked_ban,
-    register as register_commands,
-    score as score_command,
+    register,
+    score,
     stats,
-    submit as submit_command,
+    submit,
     voids,
     warns,
 )
@@ -103,7 +103,7 @@ REASON_TEMPLATE = "The reason to {}"
     ],
 )
 async def _help(ctx: SlashContext, page=None):
-    await help_command.help(ctx, page)
+    await help.help(ctx, page)
 
 
 @slash.slash(
@@ -112,12 +112,12 @@ async def _help(ctx: SlashContext, page=None):
     options=[text_option("username", "The name you would like to use")],
 )
 async def _register(ctx: SlashContext, username=None):
-    await register_commands.register(ctx, username)
+    await register.register(ctx, username)
 
 
 @slash.slash(name="unregister", description="Unregister from the bot")
 async def _unregister(ctx: SlashContext):
-    await register_commands.unregister(ctx)
+    await register.unregister(ctx)
 
 
 @slash.slash(
@@ -172,12 +172,12 @@ async def _game(ctx: SlashContext, gameid):
     options=[user_option("The user to pick")],
 )
 async def _pick(ctx: SlashContext, user):
-    await pick_command.pick(ctx, user)
+    await pick.pick(ctx, user)
 
 
 @slash.slash(name="score", description="Submit game proof to the scorers")
 async def _score(ctx: SlashContext):
-    await score_command.score(client, ctx)
+    await score.score(client, ctx)
 
 
 @slash.slash(name="void", description="Start a vote to void this game")
@@ -208,7 +208,7 @@ async def _ghost(ctx: SlashContext):
     ],
 )
 async def _submit(ctx: SlashContext, gameid, winner):
-    await submit_command.submit(ctx, gameid, winner)
+    await submit.submit(ctx, gameid, winner)
 
 
 @slash.slash(
@@ -229,7 +229,7 @@ async def _unvoid(ctx: SlashContext, gameid):
     options=[user_option("The user to invite")],
 )
 async def _party_invite(ctx: SlashContext, user):
-    await party_commands.invite(ctx, user)
+    await party.invite(ctx, user)
 
 
 @slash.slash(
@@ -238,17 +238,17 @@ async def _party_invite(ctx: SlashContext, user):
     options=[user_option("The user whose invite to accept")],
 )
 async def _party_accept(ctx: SlashContext, user):
-    await party_commands.accept(ctx, user)
+    await party.accept(ctx, user)
 
 
 @slash.slash(name="party-list", description="Lists your party members")
 async def _party_list(ctx: SlashContext):
-    await party_commands.show(ctx)
+    await party.show(ctx)
 
 
 @slash.slash(name="party-leave", description="Leave your party")
 async def _party_leave(ctx: SlashContext):
-    await party_commands.leave(ctx)
+    await party.leave(ctx)
 
 
 # --- Moderation commands ---------------------------------------------------

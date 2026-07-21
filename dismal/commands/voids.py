@@ -6,9 +6,9 @@ once `VOTES_REQUIRED` of the eight react to it. The reaction handler in
 """
 
 import config
-from .. import games
+
+from .. import games, utils
 from .. import repository as repo
-from .. import utils
 
 VOTES_REQUIRED = 5
 TEAM_SIZE = 8

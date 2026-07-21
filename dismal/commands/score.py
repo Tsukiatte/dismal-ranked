@@ -12,6 +12,7 @@ import io
 import discord
 
 import config
+
 from .. import games
 from .. import repository as repo
 

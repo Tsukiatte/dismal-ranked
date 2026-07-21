@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The storage and rating layers have no Discord dependency, so they
+        # are tested across every version they are expected to work on.
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ruff
+        run: pip install ruff==0.1.9
+
+      - name: Check style
+        run: ruff check .
+
+  install:
+    name: Full install (Python 3.8)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+
+      - name: Import the bot
+        # Catches dependency drift -- a transitive package publishing a
+        # breaking release would fail here rather than at runtime.
+        env:
+          DISCORD_TOKEN: ci-placeholder
+          DATABASE_PATH: /tmp/ci.db
+        run: python -c "import main; print(f'{len(main.slash.commands)} commands registered')"
+
+  migrate:
+    name: Migration smoke test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Migrate an empty source directory
+        # The migration must be safe to run against missing or blank files.
+        env:
+          DATABASE_PATH: /tmp/migrate.db
+        run: |
+          mkdir -p /tmp/empty-databases
+          python scripts/migrate_json.py /tmp/empty-databases

@@ -7,10 +7,10 @@ team paid and the losing team untouched.
 """
 
 import config
-from .. import db
+
+from .. import db, utils
 from .. import elo as elo_table
 from .. import repository as repo
-from .. import utils
 
 VOID = "void"
 

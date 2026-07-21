@@ -16,6 +16,7 @@ import discord
 from discord.ext import commands
 
 import config
+
 from .. import repository as repo
 
 CAPTAIN_COUNT = 2
